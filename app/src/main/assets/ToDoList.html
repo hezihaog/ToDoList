@@ -14,22 +14,22 @@
 </head>
 
 <body>
-	<header>
-		<section>
-			<form action="javascript:postaction()" id="form">
-				<label for="title">ToDoList</label>
-				<input type="text" id="title" name="title" placeholder="添加ToDo" required="required" autocomplete="off">
-			</form>
-		</section>
-	</header>
+<header>
 	<section>
-		<h2 onclick="save()">正在进行 <span id="todocount">0</span></h2>
-		<ol id="todolist" class="demo-box"></ol>
-		<h2>已经完成 <span id="donecount">0</span></h2>
-		<ul id="donelist"></ul>
+		<form action="javascript:postaction()" id="form">
+			<label for="title">ToDoList</label>
+			<input type="text" id="title" name="title" placeholder="添加ToDo">
+		</form>
 	</section>
-	<footer>
-		Copyright © 2014 todolist.cn <a href="javascript:clear();">clear</a>
-	</footer>
+</header>
+<section>
+	<h2 onclick="save()">正在进行 <span id="todocount">0</span></h2>
+	<ol id="todolist" class="demo-box"></ol>
+	<h2>已经完成 <span id="donecount">0</span></h2>
+	<ul id="donelist"></ul>
+</section>
+<footer>
+	Copyright © 2014 todolist.cn <a href="javascript:clear();">clear</a>
+</footer>
 </body>
 </html>
