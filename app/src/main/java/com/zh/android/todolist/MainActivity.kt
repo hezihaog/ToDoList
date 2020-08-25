@@ -1,17 +1,16 @@
 package com.zh.android.todolist
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.webkit.WebSettings
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import org.xwalk.core.XWalkView
 
 class MainActivity : AppCompatActivity() {
     private val vWebView by lazy {
         val mainContent = findViewById<ViewGroup>(R.id.main_content)
-        val webView = WebView(this)
+        val webView = XWalkView(this)
         mainContent.addView(
             webView,
             ViewGroup.LayoutParams(
@@ -26,16 +25,13 @@ class MainActivity : AppCompatActivity() {
      * Url地址
      */
     private val mWebUrl = "file:///android_asset/ToDoList.html"
+    //private val mWebUrl = "https://www.baidu.com/"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         vWebView.apply {
-            //远程支持Debug
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                WebView.setWebContentsDebuggingEnabled(true)
-            }
             settings.apply {
                 //当页面宽度大于WebView宽度时，缩小使页面宽度等于WebView宽度
                 loadWithOverviewMode = false
@@ -68,11 +64,7 @@ class MainActivity : AppCompatActivity() {
                 //开启DOM存储
                 domStorageEnabled = true
                 //不进行缓存
-                cacheMode = WebSettings.LOAD_NO_CACHE
-                //5.0以上允许加载http和https混合的页面(5.0以下默认允许，5.0+默认禁止)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                }
+                settings.cacheMode = WebSettings.LOAD_NO_CACHE;
             }
             loadUrl(mWebUrl)
         }
@@ -81,11 +73,12 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         vWebView.apply {
+            loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            removeAllViews()
+            vWebView.extensionManager.onDestroy()
             parent?.also {
                 (it as ViewGroup).removeView(vWebView)
             }
-            removeAllViews()
-            destroy()
         }
     }
 }
