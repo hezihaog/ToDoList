@@ -13,21 +13,24 @@ import com.zh.android.http.HttpRequest
  */
 fun HttpRequest.enqueue(
     onSuccess: (result: String) -> Unit,
-    onFail: (() -> Unit?)? = null,
+    onFail: ((e: Exception) -> Unit?)? = null,
     onCancelled: ((result: String?) -> Unit?)? = null
 ) {
     val that = this
-    object : AsyncTask<Void, Void, String>() {
-        override fun doInBackground(vararg params: Void?): String {
-            return that.execute().body()
+    object : AsyncTask<Void, Void, String?>() {
+        override fun doInBackground(vararg params: Void): String? {
+            try {
+                return that.execute().body()
+            } catch (e: Exception) {
+                onFail?.invoke(e)
+            }
+            return null
         }
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             if (result != null) {
                 onSuccess(result)
-            } else {
-                onFail?.invoke()
             }
         }
 

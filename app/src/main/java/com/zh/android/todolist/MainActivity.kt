@@ -101,7 +101,8 @@ class MainActivity : AppCompatActivity() {
             .enqueue({
                 LogUtils.json(it)
             }, {
-                LogUtils.d("请求失败")
+                it.printStackTrace()
+                LogUtils.d("请求失败，原因：${it.message}")
             })
     }
 }
