@@ -16,6 +16,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    //useLibrary "org.apache.http.legacy"
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,4 +37,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //常用混淆
     implementation "com.blankj:free-proguard:1.0.2"
+    //hutool工具类
+    implementation 'cn.hutool:hutool-all:4.6.8'
+    //LogUtil
+    debugImplementation 'com.apkfuns.logutils:library:1.7.5'
+    releaseImplementation 'com.apkfuns.logutils:logutils-no-op:1.7.5'
 }

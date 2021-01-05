@@ -1,12 +1,17 @@
 package com.zh.android.todolist
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import cn.hutool.http.HttpRequest
+import cn.hutool.http.HttpUtil
+import com.apkfuns.logutils.LogUtils
 
 class MainActivity : AppCompatActivity() {
     private val vWebView by lazy {
@@ -76,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             }
             loadUrl(mWebUrl)
         }
+        testHutoolHttp()
     }
 
     override fun onDestroy() {
@@ -87,5 +93,18 @@ class MainActivity : AppCompatActivity() {
             removeAllViews()
             destroy()
         }
+    }
+
+    private fun testHutoolHttp() {
+        val url = "https://www.wanandroid.com/banner/json"
+        HttpRequest
+            .get(url)
+            .header("token", "123")
+            .timeout(-1)
+            .enqueue({
+                LogUtils.json(it)
+            }, {
+                LogUtils.d("请求失败")
+            })
     }
 }
