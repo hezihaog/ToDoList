@@ -1,16 +1,13 @@
 package com.zh.android.todolist
 
 import android.annotation.SuppressLint
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
-import cn.hutool.http.HttpRequest
-import cn.hutool.http.HttpUtil
+import com.zh.android.http.HttpRequest
 import com.apkfuns.logutils.LogUtils
 
 class MainActivity : AppCompatActivity() {
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
             loadUrl(mWebUrl)
         }
-        testHutoolHttp()
+        testHttp()
     }
 
     override fun onDestroy() {
@@ -95,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun testHutoolHttp() {
+    private fun testHttp() {
         val url = "https://www.wanandroid.com/banner/json"
         HttpRequest
             .get(url)
