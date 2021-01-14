@@ -13,7 +13,7 @@ import com.zh.android.http.HttpRequest
  */
 fun HttpRequest.enqueue(
     onSuccess: (result: String) -> Unit,
-    onFail: ((e: Exception) -> Unit?)? = null,
+    onFail: ((e: Throwable) -> Unit?)? = null,
     onCancelled: ((result: String?) -> Unit?)? = null
 ) {
     val that = this
@@ -21,7 +21,7 @@ fun HttpRequest.enqueue(
         override fun doInBackground(vararg params: Void): String? {
             try {
                 return that.execute().body()
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 onFail?.invoke(e)
             }
             return null
