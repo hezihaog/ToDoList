@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.zh.android.http.HttpRequest
 import com.apkfuns.logutils.LogUtils
+import com.zh.android.todolist.ext.enqueue
 
 class MainActivity : AppCompatActivity() {
     private val vWebView by lazy {
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * Url地址
      */
-    private val mWebUrl = "file:///android_asset/ToDoList.html"
+    private val mWebUrl = "file:///android_asset/todolist/ToDoList.html"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,11 +96,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun testHttp() {
         val url = "https://www.wanandroid.com/banner/json"
+        //val url = "http://localhost:8080/user/info"
         HttpRequest
             .get(url)
             .header("token", "123")
             .timeout(-1)
             .enqueue({
+                Toast.makeText(this@MainActivity.applicationContext, it, Toast.LENGTH_SHORT).show()
                 LogUtils.json(it)
             }, {
                 it.printStackTrace()
