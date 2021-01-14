@@ -381,7 +381,13 @@ public class ConverterRegistry implements Serializable{
 		defaultConverterMap.put(TimeZone.class, new TimeZoneConverter());
 		defaultConverterMap.put(Locale.class, new LocaleConverter());
 		defaultConverterMap.put(Charset.class, new CharsetConverter());
-		defaultConverterMap.put(Path.class, new PathConverter());
+		try {
+			defaultConverterMap.put(Path.class, new PathConverter());
+		} catch (Throwable e) {
+			// ignore
+			// jdk8才有Path类，需要API26以上才能支持
+			//e.printStackTrace();
+		}
 		defaultConverterMap.put(Currency.class, new CurrencyConverter());// since 3.0.8
 		defaultConverterMap.put(UUID.class, new UUIDConverter());// since 4.0.10
 		defaultConverterMap.put(StackTraceElement.class, new StackTraceElementConverter());// since 4.5.2
