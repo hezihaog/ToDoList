@@ -1,6 +1,7 @@
 package com.zh.android.todolist
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import com.apkfuns.logutils.LogUtils
 import com.zh.android.todolist.ext.enqueue
 
 class MainActivity : AppCompatActivity() {
+    private var mRequestTask: AsyncTask<Void, Void, String?>? = null
+
     private val vWebView by lazy {
         val mainContent = findViewById<ViewGroup>(R.id.main_content)
         val webView = WebView(this)
@@ -92,21 +95,34 @@ class MainActivity : AppCompatActivity() {
             removeAllViews()
             destroy()
         }
+        mRequestTask?.apply {
+            if (!isCancelled) {
+                cancel(true)
+            }
+        }
     }
 
     private fun testHttp() {
         val url = "https://www.wanandroid.com/banner/json"
         //val url = "http://localhost:8080/user/info"
-        HttpRequest
+        mRequestTask = HttpRequest
             .get(url)
             .header("token", "123")
             .timeout(-1)
             .enqueue({
-                Toast.makeText(this@MainActivity.applicationContext, it, Toast.LENGTH_SHORT).show()
+                toast(it)
                 LogUtils.json(it)
             }, {
                 it.printStackTrace()
+                toast(it.message)
                 LogUtils.d("请求失败，原因：${it.message}")
             })
+    }
+
+    private fun toast(msg: String?) {
+        if (msg.isNullOrBlank()) {
+            return
+        }
+        Toast.makeText(this@MainActivity.applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 }

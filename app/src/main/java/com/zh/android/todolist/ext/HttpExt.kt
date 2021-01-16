@@ -15,9 +15,9 @@ fun HttpRequest.enqueue(
     onSuccess: (result: String) -> Unit,
     onFail: ((e: Throwable) -> Unit?)? = null,
     onCancelled: ((result: String?) -> Unit?)? = null
-) {
+): AsyncTask<Void, Void, String?> {
     val that = this
-    object : AsyncTask<Void, Void, String?>() {
+    return object : AsyncTask<Void, Void, String?>() {
         override fun doInBackground(vararg params: Void): String? {
             try {
                 return that.execute().body()
