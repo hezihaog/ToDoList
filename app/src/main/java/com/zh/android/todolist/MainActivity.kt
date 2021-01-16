@@ -1,9 +1,7 @@
 package com.zh.android.todolist
 
 import android.annotation.SuppressLint
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -14,6 +12,9 @@ import com.apkfuns.logutils.LogUtils
 import com.zh.android.todolist.ext.enqueue
 
 class MainActivity : AppCompatActivity() {
+    private val mMainHandler:Handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
     private var mRequestTask: AsyncTask<Void, Void, String?>? = null
 
     private val vWebView by lazy {
@@ -123,6 +124,15 @@ class MainActivity : AppCompatActivity() {
         if (msg.isNullOrBlank()) {
             return
         }
-        Toast.makeText(this@MainActivity.applicationContext, msg, Toast.LENGTH_SHORT).show()
+        fun show() {
+            Toast.makeText(this@MainActivity.applicationContext, msg, Toast.LENGTH_SHORT).show()
+        }
+        if (Thread.currentThread() == Looper.getMainLooper().thread) {
+            show()
+        } else {
+            mMainHandler.post {
+                show()
+            }
+        }
     }
 }
